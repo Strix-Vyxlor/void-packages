@@ -1,0 +1,31 @@
+# Template file for 'xdg-desktop-portal-cosmic'
+pkgname=xdg-desktop-portal-cosmic
+version=1.0.0alpha4
+revision=1
+archs="x86_64 aarch64"
+build_helper=rust
+hostmakedepends="git make cargo pkg-config clang19"
+makedepends="rust-std libclang19 glib-devel libgbm-devel pipewire-devel wayland-devel libxkbcommon-devel"
+depends=""
+short_desc="desktop portal for COSMIC desktop"
+maintainer="strix vyxlor"
+license="GPL-3.0-or-later"
+homepage="https://github.com/pop-os/xdg-desktop-portal-cosmic"
+
+do_fetch() {
+	git clone https://github.com/pop-os/xdg-desktop-portal-cosmic.git "$wrksrc"
+}
+
+do_build() {
+    export RUSTFLAGS="--sysroot ${XBPS_CROSS_BASE:-/}"
+    make all
+}
+
+do_install() {
+    export CARGO_TARGET_DIR="target/${XBPS_CROSS_BASE:+${RUST_TARGET}}"
+    make install prefix=/usr
+}
+
+post_install() {
+    vlicense LICENSE
+}

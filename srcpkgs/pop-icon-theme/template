@@ -1,0 +1,28 @@
+# Template file for 'pop-icon-theme'
+pkgname=pop-icon-theme
+version=3.5.1
+revision=1
+hostmakedepends="git meson"
+makedepends=""
+depends="adwaita-icon-theme"
+short_desc="pop icon theme for linux"
+maintainer="strix vyxlor"
+license="CC-SA-4.0"
+homepage="https://github.com/pop-os/icon-theme"
+
+do_fetch() {
+	git clone https://github.com/pop-os/icon-theme.git "$wrksrc"
+}
+
+do_build() {
+	meson build
+	meson compile -C build
+}
+
+do_install() {
+	meson install -C build
+}
+
+post_install() {
+	vlicense LICENSE
+}

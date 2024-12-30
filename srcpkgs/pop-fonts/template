@@ -1,0 +1,24 @@
+# Template file for 'pop-fonts'
+pkgname=pop-fonts
+version=1.0.0
+revision=1
+arch="x86_64 aarch64"
+hostmakedepends="git make"
+makedepends=""
+depends=""
+short_desc="pop-os fonts"
+maintainer="strix vyxlor"
+license="GPL-3.0"
+homepage="https://github.com/pop-os"
+
+do_fetch() {
+    git clone https://github.com/pop-os/fonts.git "$wrksrc"
+}
+
+do_install() {
+    make install
+}
+
+post_install() {
+    vlicense LICENSE
+}

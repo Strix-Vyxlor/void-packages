@@ -1,0 +1,10 @@
+diff --git a/meson.build b/meson.build
+index 10325e5..2fa9731 100644
+--- a/meson.build
++++ b/meson.build
+@@ -8,5 +8,3 @@ project('pop-icon-theme',
+ install_subdir('Pop',
+     install_dir: join_paths(get_option('prefix'), 'share/icons')
+ )
+-
+-meson.add_install_script('meson/post_install.py')

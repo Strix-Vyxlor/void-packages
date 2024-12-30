@@ -1,0 +1,13 @@
+# Template file for 'cosmic-epoch'
+pkgname=cosmic-epoch
+version=1.0.0alpha4
+revision=1
+build_style=meta
+archs="x86_64 aarch64"
+hostmakedepends=""
+makedepends=""
+depends="cosmic-session cosmic-files cosmic-term"
+short_desc="Next generation Cosmic desktop environment"
+maintainer="strix vyxlor"
+license="GPL-3.0"
+homepage="https://github.com/pop-os/cosmic-epoch"

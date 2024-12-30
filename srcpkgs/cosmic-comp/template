@@ -1,0 +1,31 @@
+# Template file for 'cosmic-comp'
+pkgname=cosmic-comp
+version=1.0.0alpha4
+revision=1
+archs="x86_64 aarch64"
+build_helper=rust
+hostmakedepends="cargo git make pkg-config"
+makedepends="rust-std wayland-devel libxkbcommon-devel libgbm-devel libinput-devel libseat-devel pixman-devel eudev-libudev-devel libxcb-devel fontconfig-devel"
+depends=""
+short_desc="WIP COSMIC terminal emulator"
+maintainer="strix vyxlor"
+license="GPL-3.0"
+homepage="https://github.com/pop-os/cosmic-term"
+
+do_fetch() {
+	git clone https://github.com/pop-os/cosmic-comp.git "$wrksrc"
+}
+
+do_build() {
+    export RUSTFLAGS="--sysroot ${XBPS_CROSS_BASE:-/}"
+    make all
+}
+
+do_install() {
+    export CARGO_TARGET_DIR="target/${XBPS_CROSS_BASE:+${RUST_TARGET}}"
+    make install prefix=/usr
+}
+
+post_install() {
+    vlicense LICENSE
+}

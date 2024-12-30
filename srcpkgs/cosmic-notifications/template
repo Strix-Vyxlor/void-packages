@@ -1,0 +1,31 @@
+# Template file for 'cosmic-notifications'
+pkgname=cosmic-notifications
+version=1.0.0alpha4
+revision=1
+archs="x86_64 aarch64"
+build_helper=rust
+hostmakedepends="git just cargo pkg-config intltool"
+makedepends="rust-std wayland-devel libxkbcommon-devel"
+depends=""
+short_desc="WIP"
+maintainer="strix vyxlor"
+license="GPL-3.0"
+homepage="https://github.com/pop-os/cosmic-applets"
+
+do_fetch() {
+	git clone https://github.com/pop-os/cosmic-notifications.git "$wrksrc"
+}
+
+do_build() {
+    export RUSTFLAGS="--sysroot ${XBPS_CROSS_BASE:-/}"
+    just build-release
+}
+
+do_install() {
+    export CARGO_TARGET_DIR="target/${XBPS_CROSS_BASE:+${RUST_TARGET}}"
+    just rootdir=$DESTDIR prefix=/usr install
+}
+
+post_install() {
+    vlicense LICENSE.md
+}

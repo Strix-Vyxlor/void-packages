@@ -1,0 +1,71 @@
+# Template file for 'cosmic-greeter'
+pkgname=cosmic-greeter
+version=1.0.0alpha4
+revision=1
+archs="x86_64 aarch64"
+build_helper=rust
+hostmakedepends="cargo llvm19 git clang19 just pkg-config"
+makedepends="rust-std clang19-devel wayland-devel libxkbcommon-devel libinput-devel eudev-libudev-devel pam-devel libzstd-devel"
+depends="bash cosmic-comp dbus greetd"
+short_desc="WIP COSMIC terminal emulator"
+maintainer="strix vyxlor"
+license="GPL-3.0"
+homepage="https://github.com/pop-os/cosmic-term"
+system_accounts="cosmicgreeter"
+cosmicgreeter_homedir="/var/lib/cosmic-greeter"
+cosmicgreeter_descr="Cosmic Greeter Account"
+cosmicgreeter_groups="video"
+
+do_fetch() {
+	git clone https://github.com/pop-os/cosmic-greeter.git "$wrksrc"
+}
+
+do_patch() {
+    vsed -i $wrksrc/cosmic-greeter.toml -e 's/command = "cosmic-comp systemd-cat -t cosmic-greeter cosmic-greeter"/command = "cosmic-comp cosmic-greeter"/g'
+    vsed -i $wrksrc/cosmic-greeter.toml -e 's/user = "cosmic-greeter"/user = "cosmicgreeter"/g'
+}
+
+do_build() {
+    export RUSTFLAGS="--sysroot ${XBPS_CROSS_BASE:-/}"
+    just build-release
+}
+
+do_install() {
+    export CARGO_TARGET_DIR="target/${XBPS_CROSS_BASE:+${RUST_TARGET}}"
+    just rootdir=$DESTDIR prefix=/usr install
+    
+    mkdir -p $DESTDIR/etc/sv/cosmic-greeter-daemon 
+    cat > $DESTDIR/etc/sv/cosmic-greeter-daemon/run <<EOF
+#!/bin/bash
+exec /usr/bin/cosmic-greeter-daemon 
+EOF
+    mkdir -p $DESTDIR/etc/sv/cosmic-greeter 
+    cat > $DESTDIR/etc/sv/cosmic-greeter/run <<EOF
+#!/bin/bash
+exec /usr/bin/greetd /etc/greetd/cosmic-greeter.toml
+EOF
+
+    mkdir -p $DESTDIR/etc/pam.d/
+    cat > $DESTDIR/etc/pam.d/cosmic-greeter.pam <<EOF
+#%PAM-1.0
+auth    requisite       pam_nologin.so
+auth	required	pam_succeed_if.so user != root quiet_success
+@include common-auth
+auth    optional        pam_gnome_keyring.so
+@include common-account
+session required        pam_loginuid.so
+session optional        pam_keyinit.so force revoke
+session required        pam_limits.so
+session required        pam_env.so readenv=1
+session required        pam_env.so readenv=1 user_readenv=1 envfile=/etc/default/locale
+@include common-session
+session optional        pam_gnome_keyring.so auto_start
+@include common-password
+EOF
+
+    install -Dm0644 cosmic-greeter.toml $DESTDIR/etc/greetd/cosmic-greeter.toml
+}
+
+post_install() {
+     vlicense LICENSE
+}

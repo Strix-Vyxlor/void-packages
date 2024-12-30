@@ -1,0 +1,31 @@
+# Template file for 'cosmic-edit'
+pkgname=cosmic-edit
+version=1.0.0alpha4
+revision=1
+archs="x86_64 x86_64-musl aarch64 aarch64-musl"
+build_helper=rust
+hostmakedepends="git just cargo pkg-config"
+makedepends="libxkbcommon-devel oniguruma-devel libzstd-devel rust-std"
+depends="cosmic-icons"
+short_desc="COSMIC text editor"
+maintainer="strix vyxlor"
+license="GPL-3.0"
+homepage="https://github.com/pop-os/cosmic-edit"
+
+do_fetch() {
+        git clone https://github.com/pop-os/cosmic-edit.git "$wrksrc"
+}
+
+do_build() {
+    export RUSTFLAGS="--sysroot ${XBPS_CROSS_BASE:-/}"
+    just build-release
+}
+
+do_install() {
+     export CARGO_TARGET_DIR="target/${XBPS_CROSS_BASE:+${RUST_TARGET}}"
+     just rootdir=$DESTDIR prefix=/usr install
+}
+
+post_install() {
+     vlicense LICENSE
+}
