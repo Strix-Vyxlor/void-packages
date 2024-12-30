@@ -10,7 +10,7 @@ depends="cosmic-randr accountsservice gettext iso-codes NetworkManager-openvpn x
 short_desc="WIP"
 maintainer="strix vyxlor"
 license="GPL-3.0"
-homepage="https://github.com/pop-os/cosmic-applets"
+homepage="https://github.com/pop-os/cosmic-settings"
 
 do_fetch() {
 	git clone https://github.com/pop-os/cosmic-settings.git "$wrksrc"

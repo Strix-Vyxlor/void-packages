@@ -4,13 +4,13 @@ version=1.0.0alpha4
 revision=1
 archs="x86_64 aarch64"
 build_helper=rust
-hostmakedepends="cargo llvm19 git clang19 just pkg-config"
-makedepends="rust-std clang19-devel wayland-devel libxkbcommon-devel libinput-devel eudev-libudev-devel pam-devel libzstd-devel"
+hostmakedepends="cargo git clang19-devel just pkg-config"
+makedepends="rust-std libclang19 clang19-devel wayland-devel libxkbcommon-devel libinput-devel pam-devel eudev-libudev-devel"
 depends="bash cosmic-comp dbus greetd"
 short_desc="WIP COSMIC terminal emulator"
 maintainer="strix vyxlor"
 license="GPL-3.0"
-homepage="https://github.com/pop-os/cosmic-term"
+homepage="https://github.com/pop-os/cosmic-greeter"
 system_accounts="cosmicgreeter"
 cosmicgreeter_homedir="/var/lib/cosmic-greeter"
 cosmicgreeter_descr="Cosmic Greeter Account"
@@ -27,6 +27,7 @@ do_patch() {
 
 do_build() {
     export RUSTFLAGS="--sysroot ${XBPS_CROSS_BASE:-/}"
+    export LIBCLANG_PATH="${XBPS_CROSS_BASE}/usr/lib/llvm/19/lib"
     just build-release
 }
 

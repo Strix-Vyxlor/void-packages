@@ -1,0 +1,43 @@
+# Template file for 'zed-editor'
+pkgname=zed-editor
+version=0.166.1
+revision=1
+archs="x86_64 aarch64"
+build_helper=rust
+hostmakedepends="cargo clang cmake jq mold pkg-config openbsd-netcat vulkan-loader gettext"
+makedepends="rust-std gettext-devel elfutils-devel alsa-lib-devel fontconfig-devel libxcb-devel libxkbcommon-devel libzstd-devel openssl-devel wayland-devel sqlite-devel libgit2-1.8-devel"
+depends=""
+short_desc="Code at the speed of thought – Zed is a high-performance, multiplayer code editor from the creators of Atom and Tree-sitter. "
+maintainer="strix vyxlor <strix.vyxlor@gmail.com>"
+license="GPL-3.0"
+homepage="https://zed.dev/"
+distfiles="https://github.com/zed-industries/zed/archive/refs/tags/v0.166.1.tar.gz"
+checksum=49215bd681d0a0fe2be6504d5759ede4cfd57daa6033ca62a7ab30e2ce9af345
+
+do_build() {
+    cargo build --package=zed --package=cli --release
+}
+
+do_install() {
+    mkdir -p $DESTDIR/usr/bin $DESTDIR/usr/libexec
+    cp target/release/zed $DESTDIR/usr/libexec/zed-editor
+    cp target/release/cli $DESTDIR/usr/bin/zed
+
+    install -D crates/zed/resources/app-icon@2x.png $DESTDIR/usr/share/icons/hicolor/1024x1024@2x/apps/zed.png
+    install -D crates/zed/resources/app-icon.png $DESTDIR/usr/share/icons/hicolor/512x512/apps/zed.png
+    
+    # extracted from https://github.com/zed-industries/zed/blob/v0.141.2/script/bundle-linux (envsubst)
+    # and https://github.com/zed-industries/zed/blob/v0.141.2/script/install.sh (final desktop file name)
+    mkdir -p $DESTDIR/usr/share/applications
+    (
+        export DO_STARTUP_NOTIFY="true"
+        export APP_CLI="zed"
+        export APP_ICON="zed"
+        export APP_NAME="Zed"
+        export APP_ARGS="%U"
+        mkdir -p "$out/share/applications"
+        envsubst < "crates/zed/resources/zed.desktop.in" > "${DESTDIR}/usr/share/applications/dev.zed.Zed.desktop"
+    )  
+}
+
+
