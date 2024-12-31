@@ -4,10 +4,10 @@ version=1.0.0alpha4
 revision=1
 archs="x86_64 aarch64"
 build_helper=rust
-hostmakedepends="cargo git make pkg-config"
+hostmakedepends="cargo git make pkg-config clang19 mold"
 makedepends="rust-std wayland-devel libxkbcommon-devel libgbm-devel libinput-devel libseat-devel pixman-devel eudev-libudev-devel libxcb-devel fontconfig-devel"
 depends=""
-short_desc="WIP COSMIC terminal emulator"
+short_desc="WIP"
 maintainer="strix vyxlor"
 license="GPL-3.0"
 homepage="https://github.com/pop-os/cosmic-term"
@@ -23,7 +23,7 @@ do_build() {
 
 do_install() {
     export CARGO_TARGET_DIR="target/${XBPS_CROSS_BASE:+${RUST_TARGET}}"
-    make install prefix=/usr
+    make DESTDIR=$DESTDIR prefix=/usr install
 }
 
 post_install() {

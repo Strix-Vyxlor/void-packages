@@ -16,7 +16,7 @@ do_fetch() {
 }
 
 do_install() {
-    make install
+    make DESTDIR=$DESTDIR install
 }
 
 post_install() {

@@ -23,6 +23,9 @@ do_fetch() {
 do_patch() {
     vsed -i $wrksrc/cosmic-greeter.toml -e 's/command = "cosmic-comp systemd-cat -t cosmic-greeter cosmic-greeter"/command = "cosmic-comp cosmic-greeter"/g'
     vsed -i $wrksrc/cosmic-greeter.toml -e 's/user = "cosmic-greeter"/user = "cosmicgreeter"/g'
+    vsed -i $wrksrc/cosmic-greeter.toml -e 's/vt = "1"/vt = "2"/g"
+    vsed -i $wrksrc/cosmic-greeter.toml -e "s/[general]//"
+    vsed -i $wrksrc/cosmic-greeter.toml -e "s/service = "cosmic-greeter"//"
 }
 
 do_build() {
@@ -37,31 +40,31 @@ do_install() {
     
     mkdir -p $DESTDIR/etc/sv/cosmic-greeter-daemon 
     cat > $DESTDIR/etc/sv/cosmic-greeter-daemon/run <<EOF
-#!/bin/bash
+#!/bin/sh
 exec /usr/bin/cosmic-greeter-daemon 
 EOF
     mkdir -p $DESTDIR/etc/sv/cosmic-greeter 
     cat > $DESTDIR/etc/sv/cosmic-greeter/run <<EOF
-#!/bin/bash
-exec /usr/bin/greetd /etc/greetd/cosmic-greeter.toml
+#!/bin/sh
+exec 2>&1
+exec greetd --config /etc/greetd/cosmic-greeter.toml
 EOF
+    chmod +x $DESTDIR/etc/sv/cosmic-greeter-daemon/run
+    chmod +x $DESTDIR/etc/sv/cosmic-greeter/run
 
     mkdir -p $DESTDIR/etc/pam.d/
-    cat > $DESTDIR/etc/pam.d/cosmic-greeter.pam <<EOF
+    cat > $DESTDIR/etc/pam.d/cosmic-greeter <<EOF
 #%PAM-1.0
-auth    requisite       pam_nologin.so
-auth	required	pam_succeed_if.so user != root quiet_success
-@include common-auth
-auth    optional        pam_gnome_keyring.so
-@include common-account
-session required        pam_loginuid.so
-session optional        pam_keyinit.so force revoke
-session required        pam_limits.so
-session required        pam_env.so readenv=1
-session required        pam_env.so readenv=1 user_readenv=1 envfile=/etc/default/locale
-@include common-session
-session optional        pam_gnome_keyring.so auto_start
-@include common-password
+auth       include                     system-local-login
+auth       optional                    pam_gnome_keyring.so
+
+account    include                     system-local-login
+
+password   include                     system-local-login
+password   optional                    pam_gnome_keyring.so use_authtok
+
+session    include                     system-local-login
+session    optional                    pam_gnome_keyring.so auto_start
 EOF
 
     install -Dm0644 cosmic-greeter.toml $DESTDIR/etc/greetd/cosmic-greeter.toml

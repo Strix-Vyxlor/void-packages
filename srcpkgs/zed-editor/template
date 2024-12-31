@@ -4,7 +4,7 @@ version=0.166.1
 revision=1
 archs="x86_64 aarch64"
 build_helper=rust
-hostmakedepends="cargo clang cmake jq mold pkg-config openbsd-netcat vulkan-loader gettext"
+hostmakedepends="cargo clang19 mold cmake pkg-config openbsd-netcat vulkan-loader gettext"
 makedepends="rust-std gettext-devel elfutils-devel alsa-lib-devel fontconfig-devel libxcb-devel libxkbcommon-devel libzstd-devel openssl-devel wayland-devel sqlite-devel libgit2-1.8-devel"
 depends=""
 short_desc="Code at the speed of thought – Zed is a high-performance, multiplayer code editor from the creators of Atom and Tree-sitter. "
@@ -15,6 +15,7 @@ distfiles="https://github.com/zed-industries/zed/archive/refs/tags/v0.166.1.tar.
 checksum=49215bd681d0a0fe2be6504d5759ede4cfd57daa6033ca62a7ab30e2ce9af345
 
 do_build() {
+    export RUSTFLAGS="--sysroot ${XBPS_CROSS_BASE:-/}"
     cargo build --package=zed --package=cli --release
 }
 

@@ -10,7 +10,7 @@ depends="acpid "
 short_desc="WIP COSMIC terminal emulator"
 maintainer="strix vyxlor"
 license="GPL-3.0"
-homepage="https://github.com/pop-os/cosmic-term"
+homepage="https://github.com/pop-os/cosmic-settings-daemon"
 
 do_fetch() {
 	git clone https://github.com/pop-os/cosmic-settings-daemon.git "$wrksrc"
@@ -23,7 +23,7 @@ do_build() {
 
 do_install() {
     export CARGO_TARGET_DIR="target/${XBPS_CROSS_BASE:+${RUST_TARGET}}"
-    make install prefix=/usr
+    make DESTDIR=$DESTDIR prefix=/usr install
 }
 
 post_install() {

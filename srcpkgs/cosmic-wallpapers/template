@@ -15,5 +15,5 @@ do_fetch() {
 }
 
 do_install() {
-    make prefix=$DESTDIR/usr install
+    make DESTDIR=$DESTDIR prefix=/usr install
 }

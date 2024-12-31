@@ -15,12 +15,11 @@ do_fetch() {
 }
 
 do_build() {
-	meson build
-	meson compile -C build
+	meson -Dprefix=$DESTDIR/usr build
 }
 
 do_install() {
-	meson install -C build
+    ninja -C "build" install
 }
 
 post_install() {
