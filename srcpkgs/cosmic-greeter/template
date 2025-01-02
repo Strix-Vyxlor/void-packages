@@ -23,9 +23,9 @@ do_fetch() {
 do_patch() {
     vsed -i $wrksrc/cosmic-greeter.toml -e 's/command = "cosmic-comp systemd-cat -t cosmic-greeter cosmic-greeter"/command = "cosmic-comp cosmic-greeter"/g'
     vsed -i $wrksrc/cosmic-greeter.toml -e 's/user = "cosmic-greeter"/user = "cosmicgreeter"/g'
-    vsed -i $wrksrc/cosmic-greeter.toml -e 's/vt = "1"/vt = "2"/g"
-    vsed -i $wrksrc/cosmic-greeter.toml -e "s/[general]//"
-    vsed -i $wrksrc/cosmic-greeter.toml -e "s/service = "cosmic-greeter"//"
+    vsed -i $wrksrc/cosmic-greeter.toml -e 's/vt = "1"/vt = "2"/g'
+    vsed -i $wrksrc/cosmic-greeter.toml -e "s/[general]//g"
+    vsed -i $wrksrc/cosmic-greeter.toml -e 's/service = "cosmic-greeter"//g'
 }
 
 do_build() {
