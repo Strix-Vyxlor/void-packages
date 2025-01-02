@@ -1,0 +1,20 @@
+# Template file for 'oh-my-posh'
+pkgname=oh-my-posh
+version=24.17.1
+revision=1
+archs="x86_64 aarch64"
+build_style=go
+hostmakedepends="go bash "
+makedepends=""
+depends=""
+short_desc="The most customisable and low-latency cross platform/shell prompt renderer"
+maintainer="strix vyxlor <strix.vyxlor@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://ohmyposh.dev/"
+distfiles="https://github.com/JanDeDobbeleer/oh-my-posh/archive/refs/tags/v${version}.tar.gz"
+checksum=c53c8c62bdc116a9ff11a54f5a0a8f9e0ac1ba594adcfe7dbf4941d663154636
+
+post_extract() {
+    bash -c "shopt -s extglob; rm -r -- !('src')"
+    mv src/* .
+}
