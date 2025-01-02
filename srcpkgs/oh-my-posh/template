@@ -4,7 +4,7 @@ version=24.17.1
 revision=1
 archs="x86_64 aarch64"
 build_style=go
-hostmakedepends="go bash "
+hostmakedepends="go xargs grep"
 makedepends=""
 depends=""
 short_desc="The most customisable and low-latency cross platform/shell prompt renderer"
@@ -15,6 +15,7 @@ distfiles="https://github.com/JanDeDobbeleer/oh-my-posh/archive/refs/tags/v${ver
 checksum=c53c8c62bdc116a9ff11a54f5a0a8f9e0ac1ba594adcfe7dbf4941d663154636
 
 post_extract() {
-    bash -c "shopt -s extglob; rm -r -- !('src')"
+    cd $wrksrc
+    ls | grep -xvF src | xargs rm -f --
     mv src/* .
 }
