@@ -1,0 +1,20 @@
+# Template file for 'regreet'
+pkgname=regreet
+version=0.1.3
+revision=1
+build_style=cargo
+hostmakedepends="cargo pkg-config"
+makedepends="gtk4-devel glib-devel"
+depends="greetd"
+short_desc="Clean and customizable greeter for greetd"
+maintainer="strix vyxlor <strix.vyxlor@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://github.com/rharish101/ReGreet"
+distfiles="https://github.com/rharish101/ReGreet/archive/refs/tags/"$version".tar.gz"
+checksum=94663c856aa748a0ab973a77fb0851a1cd8afcea7c5c273d4671eca4ba8ad3c3
+
+post_install() {
+    vlicense LICENSE
+    mkdir -p $DESTDIR/usr/share/examples/regreet
+    install -m644 regreet.sample.toml $DESTDIR/usr/share/examples/regreet/
+}
