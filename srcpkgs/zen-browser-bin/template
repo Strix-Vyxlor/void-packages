@@ -1,0 +1,97 @@
+# Template file for 'zen-browser-bin'
+pkgname=zen-browser-bin
+_pkgname=zen-browser
+version=1.0.2.b.5
+revision=1
+archs="x86_64 aarch64"
+hostmakedepends="curl tar"
+makedepends=""
+depends="bash libXt mime-types dbus-glib nss"
+short_desc="Experience tranquillity while browsing the web without people tracking you!"
+maintainer="strix vyxlor <strix.vyxlor@gmail.com>"
+license="MPL-2.0"
+homepage="https://zen-browser.app"
+
+do_fetch() {
+    curl -OL https://github.com/zen-browser/desktop/releases/download/1.0.2-b.5/zen.linux-${XBPS_MACHINE}.tar.bz2
+    mkdir -p "$wrksrc"
+    tar xf zen.linux-${XBPS_MACHINE}.tar.bz2 -C "$wrksrc"
+}
+
+do_patch() {
+    cat > "$_pkgname".sh <<EOF
+#!/bin/bash
+exec /opt/"$pkgname"/zen-bin "$@"
+EOF
+    cat > "$_pkgname".desktop <<EOF
+[Desktop Entry]
+Name=Zen Browser
+Comment=Experience tranquillity while browsing the web without people tracking you!
+Exec=/opt/"$pkgname"/zen-bin %u
+Icon=zen-browser
+Type=Application
+MimeType=text/html;text/xml;application/xhtml+xml;x-scheme-handler/http;x-scheme-handler/https;application/x-xpinstall;application/pdf;application/json;
+StartupWMClass=zen-beta
+Categories=Network;WebBrowser;
+StartupNotify=true
+Terminal=false
+X-MultipleArgs=false
+Keywords=Internet;WWW;Browser;Web;Explorer;
+Actions=new-window;new-private-window;profilemanager;
+
+[Desktop Action new-window]
+Name=Open a New Window
+Exec=/opt/"$pkgname"/zen-bin %u
+
+[Desktop Action new-private-window]
+Name=Open a New Private Window
+Exec=/opt/"$pkgname"/zen-bin --private-window %u
+
+[Desktop Action profilemanager]
+Name=Open the Profile Manager
+Exec=/opt/"$pkgname"/zen-bin --ProfileManager %u
+EOF
+
+    cat > policies.json <<EOF
+{
+    "policies": {
+      "DisableAppUpdate": true,
+      "Homepage": {
+        "URL": "https://zen-browser.app/",
+        "Locked": false
+      },
+      "SearchEngines": {
+        "Default": "DuckDuckGo",
+        "PreventInstalls": true
+      },
+      "DNSOverHTTPS": {
+        "Enabled": true,
+        "Locked": false
+      }
+    }
+  }
+  
+ 
+EOF
+}
+
+pre_install() {
+    mkdir -p $DESTDIR/usr/bin
+    mkdir -p $DESTDIR/usr/share/applications
+    mkdir -p $DESTDIR/opt
+}
+
+do_install() {
+    cp -r zen $DESTDIR/opt/"$pkgname"
+    install -m755 "$_pkgname".sh $DESTDIR/usr/bin/"$_pkgname"
+    install -m644 "$_pkgname".desktop $DESTDIR/usr/share/applications/
+    
+    for i in 16x16 32x32 48x48 64x64 128x128; do
+        install -d $DESTDIR/usr/share/icons/hicolor/$i/apps/
+        ln -s /opt/"$pkgname"/browser/chrome/icons/default/default${i/x*}.png \
+            $DESTDIR/usr/share/icons/hicolor/$i/apps/$_pkgname.png
+    done
+    
+    mkdir $DESTDIR/opt/$pkgname/distribution
+    install -m644 policies.json $DESTDIR/opt/$pkgname/distribution/
+}
