@@ -1,8 +1,8 @@
 # Template file for 'cosmic-files'
 pkgname=cosmic-files
-version=1.0.0alpha4
+version=1.0.0alpha5
 revision=1
-archs="x86_64 aarch64"
+archs="x86_64* aarch64*"
 build_helper=rust
 hostmakedepends="git just cargo pkg-config"
 makedepends="libxkbcommon-devel rust-std glib-devel"
