@@ -1,8 +1,8 @@
 # Template file for 'pop-launcher'
 pkgname=pop-launcher
-version=1.2.5
-revision=1
-archs="x86_64 aarch64"
+version=1.2.4
+revision=2
+archs="x86_64* aarch64*"
 build_helper=rust
 hostmakedepends="git just cargo pkg-config intltool"
 makedepends="rust-std libxkbcommon-devel"
@@ -11,11 +11,8 @@ short_desc="Modular IPC-based desktop launcher service "
 maintainer="strix vyxlor"
 license="MPL-2.0"
 homepage="https://github.com/pop-os/cosmic-launcher"
-
-do_fetch() {
-	git clone https://github.com/pop-os/launcher.git "$wrksrc"
-}
-
+distfiles="https://github.com/pop-os/launcher/archive/refs/tags/${version}.tar.gz"
+checksum=a84bed75c618a01a1a552f36be323d2d851e37d1845db56125a9c8aa4fed64bb
 do_build() {
     export RUSTFLAGS="--sysroot ${XBPS_CROSS_BASE:-/}"
     just build-release

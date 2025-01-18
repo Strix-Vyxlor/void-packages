@@ -1,0 +1,14 @@
+# Template file for 'river-luatile'
+pkgname=river-luatile
+version=0.1.4
+revision=1
+build_style=cargo
+hostmakedepends="cargo pkg-config"
+makedepends="rust-std libxkbcommon-devel LuaJIT-devel"
+depends=""
+short_desc="Write your own river layout generator in lua"
+maintainer="strix vyxlor <strix.vyxlor@gmail.com>"
+license="GPL-3.0"
+homepage="https://github.com/MaxVerevkin/river-luatile"
+distfiles="https://github.com/MaxVerevkin/river-luatile/archive/refs/tags/v${version}.tar.gz"
+checksum=b0751192d484d6a418009eea5f2f84a05574c3ba00a51e0b82254fa3778de80e

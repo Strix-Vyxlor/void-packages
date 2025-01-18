@@ -2,7 +2,7 @@
 pkgname=cosmic-settings-daemon
 version=1.0.0alpha4
 revision=1
-archs="x86_64 aarch64"
+archs="x86_64* aarch64*"
 build_helper=rust
 hostmakedepends="cargo git make pkg-config"
 makedepends="rust-std libinput-devel eudev-libudev-devel"

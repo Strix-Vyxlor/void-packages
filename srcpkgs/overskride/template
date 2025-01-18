@@ -1,0 +1,24 @@
+# Template file for 'overskride'
+pkgname=overskride
+version=0.6.1
+revision=1
+archs="x86_64* aarch64*"
+build_helper=rust
+hostmakedepends="cargo meson pkg-config gettext git desktop-file-utils blueprint-compiler"
+makedepends="rust-std libadwaita-devel gtk4-devel dbus-devel"
+depends=""
+short_desc="A simple yet powerful bluetooth client."
+maintainer="strix vyxlor <strix.vyxlor@gmail.com>"
+license="GPL-3.0"
+homepage="https://github.com/kaii-lb/overskride"
+distfiles="https://github.com/kaii-lb/overskride/archive/refs/tags/v${version}.tar.gz"
+checksum=13bbf36ec9a121e225367d3dfd396caeb5f44f933e75554a1406ab9ea09ce7ff
+
+do_build() {
+	meson build -Dprefix=/usr
+	meson compile -C build
+}
+
+do_install() {
+	meson install -C build --no-rebuild --destdir "$DESTDIR"
+}

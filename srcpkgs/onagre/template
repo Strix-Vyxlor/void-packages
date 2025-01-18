@@ -1,0 +1,15 @@
+# Template file for 'onagre'
+pkgname=onagre
+version=1.1.1
+revision=1
+archs="x86_64* aarch64*"
+build_style=cargo
+hostmakedepends="cargo"
+makedepends="rust-std"
+depends="pop-launcher"
+short_desc="A general purpose application launcher for X and wayland inspired by rofi/wofi and alfred"
+maintainer="strix vyxlor <strix.vyxlor@gmail.com>"
+license="MIT"
+homepage="https://github.com/onagre-launcher/onagre"
+distfiles="https://github.com/onagre-launcher/onagre/archive/refs/tags/${version}.tar.gz"
+checksum=afecad73fc642dabdf3fcad8b347fced820131c06862c47408ebd781005bd7d0
