@@ -1,0 +1,16 @@
+# Template file for 'ags'
+pkgname=ags
+version=2.2.1
+revision=1
+archs="x86_64* aarch64*"
+build_style=go
+go_import_path="ags"
+hostmakedepends=""
+makedepends="astal-js"
+depends=""
+short_desc="Scaffolding CLI for Astal+TypeScript"
+maintainer="strix vyxlor <strix.vyxlor@gmail.com>"
+license="GPL-3.0"
+homepage="https://aylur.github.io/ags"
+distfiles="https://github.com/Aylur/ags/archive/refs/tags/v${version}.tar.gz"
+checksum=55bf060099bed245c9a0973d9bd49a7d927cd07539c329878eb33a9001299695

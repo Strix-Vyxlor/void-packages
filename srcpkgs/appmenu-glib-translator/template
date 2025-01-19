@@ -1,0 +1,25 @@
+# Template file for 'appmenu-glib-translator'
+pkgname=appmenu-glib-translator
+version=20250101
+revision=1
+archs="x86_64* aarch64*"
+hostmakedepends="meson cmake pkg-config vala"
+makedepends="glib-devel json-glib-devel gobject-introspection"
+depends=""
+short_desc="nedeth for astal"
+maintainer="strix vyxlor <strix.vyxlor@gmail.com>"
+license="LGPL-3.0"
+homepage="https://github.com/rilian-la-te/vala-panel-appmenu/tree/master/subprojects/appmenu-glib-translator"
+distfiles="https://github.com/rilian-la-te/vala-panel-appmenu/archive/refs/heads/master.zip"
+checksum=5bf4f922779f6aac16535c17f08e57da7cada5aaa91536aa48c580d8ddf0f75b
+
+do_build() {
+	cd subprojects/appmenu-glib-translator
+	meson setup --prefix /usr build
+}
+
+do_install() {
+	cd subprojects/appmenu-glib-translator
+	meson install -C build --destdir $DESTDIR
+}
+

@@ -1,0 +1,24 @@
+# Template file for 'astal-network'
+pkgname=astal-network
+version=0.0.1
+revision=1
+archs="x86_64* aarch64*"
+hostmakedepends="vala valadoc meson cmake pkg-config"
+makedepends="gtk+3-devel NetworkManager-devel gtk-layer-shell-devel json-glib-devel gobject-introspection wayland-protocols astal"
+depends=""
+short_desc="Building blocks for creating custom desktop shells."
+maintainer="strix vyxlor <strix.vyxlor@gmail.com>"
+license="LGPL-2.1"
+homepage="https://github.com/Aylur/astal"
+distfiles="https://github.com/Aylur/astal/archive/refs/heads/main.tar.gz"
+checksum=e63aec2c1682f4c8b070ff221e315ca87f1481ca4645ab447804abfbceb404fd
+
+do_build() {
+	cd lib/network
+	meson setup --prefix /usr build
+}
+
+do_install() {
+	cd lib/network
+	meson install -C build --destdir $DESTDIR
+}
