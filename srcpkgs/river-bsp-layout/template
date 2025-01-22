@@ -1,0 +1,15 @@
+# Template file for 'river-bsp-layout'
+pkgname=river-bsp-layout
+version=2.1.0
+revision=1
+archs="x86_64* aarch64*"
+build_style=cargo
+hostmakedepends="cargo"
+makedepends="rust-std"
+depends=""
+short_desc="Custom River layout manager that creates a Binary Space Partition / Grid layout using river-layout-toolkit"
+maintainer="strix vyxlor <strix.vyxlor@gmail.com>"
+license="GPL-3.0"
+homepage="https://github.com/areif-dev/river-bsp-layout"
+distfiles="https://github.com/areif-dev/river-bsp-layout/archive/refs/tags/v${version}.tar.gz"
+checksum=27e4b85e9a42f2a5090bd4552846e357ecc89019d6c32a89d7b117b30d3768c2
