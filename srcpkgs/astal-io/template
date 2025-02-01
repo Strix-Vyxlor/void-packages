@@ -11,7 +11,7 @@ maintainer="strix vyxlor <strix.vyxlor@gmail.com>"
 license="LGPL-2.1"
 homepage="https://github.com/Aylur/astal"
 distfiles="https://github.com/Aylur/astal/archive/refs/heads/main.tar.gz"
-checksum=e63aec2c1682f4c8b070ff221e315ca87f1481ca4645ab447804abfbceb404fd
+checksum=197ca4cf9cb506f062e03817ad84beef1b0a580fe6ed677fd8495b2db6fb629e
 
 do_build() {
 	cd lib/astal/io
